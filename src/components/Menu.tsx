@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-const Home = () => {
+const Menu = () => {
   const posts = [
     {
       id: 1,
       title: "Lorem",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, iste id magni quod ad assumenda consequatur sunt voluptate, non aperiam aliquam at animi ullam distinctio. Explicabo in consequatur esse sed.",
+      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, iste id magni quod ad assumenda consequatur sunt voluptate, non aperiam aliquam at animi ullam distinctio. Explicabo in consequatur esse sed. \
+      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum vitae placeat est dolor! Placeat impedit nam fuga incidunt voluptatem esse hic vitae, quod rerum sapiente labore dicta nobis consequuntur officia! \
+      ",
       img: "https://images.pexels.com/photos/9444009/pexels-photo-9444009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     },
     {
@@ -29,27 +30,17 @@ const Home = () => {
     },
   ];
   return (
-    <div className="home">
-      <div className="posts">
-        {posts.map((post) => {
-          return (
-            <div className="post" key={post.id}>
-              <div className="img">
-                <img src={post.img} alt="" />
-              </div>
-              <div className="content">
-                <Link to={`/post/${post.id}`} className="link">
-                  <h1>{post.title}</h1>
-                </Link>
-                <p>{post.desc}</p>
-                <button>Read more</button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+    <div className="menu">
+      <h1>Other posts you may like</h1>
+      {posts.map((post) => (
+        <div className="post" key={post.id}>
+          <img src={post.img} alt="" />
+          <h2>{post.title}</h2>
+          <button>Read More</button>
+        </div>
+      ))}
     </div>
   );
 };
 
-export default Home;
+export default Menu;
