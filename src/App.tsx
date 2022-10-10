@@ -71,6 +71,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import "./app.scss";
 import SinglePost from "./pages/SinglePost";
+import { Toaster } from "react-hot-toast";
 
 const Layout = () => {
   return (
@@ -124,6 +125,7 @@ function App() {
     <div className="app">
       <div className="container">
         <RouterProvider router={router} />
+        <Toaster />
       </div>
     </div>
   );
