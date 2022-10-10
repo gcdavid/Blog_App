@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/authContext";
 
 const Home = () => {
+  // const { currentUser } = useContext(AuthContext);
+  // console.log(currentUser);
   const posts = [
     {
       id: 1,

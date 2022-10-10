@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { AppAxios } from "../services/Axios";
 import { AuthContext } from "../context/authContext";
+import { IAuthContextType } from "../types/authContext";
 
 const Login = () => {
   const [inputs, setInputs] = useState<LoginInfo.Login>({
@@ -12,7 +13,8 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { currentUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext) as IAuthContextType;
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -21,8 +23,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await AppAxios.post("/auth/login", inputs);
-      console.log(res);
+      login(inputs);
       toast.success("success");
       navigate("/");
     } catch (err) {
