@@ -52,7 +52,6 @@ const AuthContexProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const login = async (inputs: LoginInfo.Login) => {
-    console.log(inputs);
     const res = await AppAxios.post("/auth/login", inputs);
     setCurrentUser(res.data);
   };

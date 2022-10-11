@@ -1,44 +1,75 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Edit from "../assets/edit.png";
 import Delete from "../assets/delete.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Menu from "../components/Menu";
+import { AppAxios } from "../services/Axios";
+import moment from "moment";
+import { AuthContext } from "../context/authContext";
+import { IAuthContextType } from "../types/authContext";
+interface ISinglePost {
+  cat: string;
+  date?: Date | string;
+  username: string;
+  desc: string;
+  img: string;
+  title: string;
+  userImg: string;
+}
 
 const SinglePost = () => {
+  const [post, setPost] = useState<ISinglePost>();
+  const Id = useLocation();
+  const navigate = useNavigate();
+  const postId: string = Id.pathname.split("/")[2];
+
+  const { currentUser } = useContext(AuthContext) as IAuthContextType;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await AppAxios.get(`/posts/${postId}`);
+        setPost(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPosts();
+  }, [postId]);
+
+  const handleDelete = async () => {
+    try {
+      const res = await AppAxios.delete(`/posts/${postId}`);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="single">
       <div className="content">
-        <img
-          src="https://images.pexels.com/photos/13516347/pexels-photo-13516347.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load"
-          alt=""
-        />
+        <img src={post?.img} alt="" />
         <div className="user">
-          <img
-            src="https://images.pexels.com/photos/13516347/pexels-photo-13516347.jpeg?auto=compress&cs=tinysrgb&w=400&lazy=load"
-            alt=""
-          />
+          <img src={post?.userImg} alt="" />
           <div className="info">
-            <span>David</span>
-            <span>Posted 7 years ago.</span>
+            <span>{post?.username}</span>
+            <span>Posted {moment(post?.date).fromNow()}</span>
           </div>
-
-          <div className="edit">
-            <Link to={`/write?edit=2`}>
-              <img src={Edit} alt="" />
-            </Link>
-            <img src={Delete} alt="" />
-          </div>
+          {currentUser.username === post?.username && (
+            <div className="edit">
+              <Link to={`/write?edit=2`} state={post}>
+                <img src={Edit} alt="" />
+              </Link>
+              <img src={Delete} alt="" onClick={handleDelete} />
+            </div>
+          )}
         </div>
-        <h1>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h1>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus
-          omnis iste illum nobis eius eos mollitia, corporis aut nesciunt
-          perferendis eligendi corrupti ab natus. Ex fugit ipsa quaerat iure
-          minima.
-        </p>
+        <h1>{post?.title}.</h1>
+        {post?.desc}
       </div>
 
-      <Menu />
+      <Menu cat={post?.cat} />
     </div>
   );
 };

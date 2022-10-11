@@ -1,36 +1,26 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
+import { AppAxios } from "../services/Axios";
+import { IAuthContextType } from "../types/authContext";
 
 const Home = () => {
-  // const { currentUser } = useContext(AuthContext);
-  // console.log(currentUser);
-  const posts = [
-    {
-      id: 1,
-      title: "Lorem",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, iste id magni quod ad assumenda consequatur sunt voluptate, non aperiam aliquam at animi ullam distinctio. Explicabo in consequatur esse sed.",
-      img: "https://images.pexels.com/photos/9444009/pexels-photo-9444009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: 2,
-      title: "Lorem",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, iste id magni quod ad assumenda consequatur sunt voluptate, non aperiam aliquam at animi ullam distinctio. Explicabo in consequatur esse sed.",
-      img: "https://images.pexels.com/photos/9444009/pexels-photo-9444009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: 3,
-      title: "Lorem",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, iste id magni quod ad assumenda consequatur sunt voluptate, non aperiam aliquam at animi ullam distinctio. Explicabo in consequatur esse sed.",
-      img: "https://images.pexels.com/photos/9444009/pexels-photo-9444009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-    {
-      id: 4,
-      title: "Lorem",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatibus, iste id magni quod ad assumenda consequatur sunt voluptate, non aperiam aliquam at animi ullam distinctio. Explicabo in consequatur esse sed.",
-      img: "https://images.pexels.com/photos/9444009/pexels-photo-9444009.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-  ];
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  const cat = useLocation().search;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await AppAxios.get(`/posts/${cat}`);
+        setPosts(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchPosts();
+  }, [cat]);
+
   return (
     <div className="home">
       <div className="posts">
