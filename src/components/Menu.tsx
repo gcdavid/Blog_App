@@ -18,7 +18,7 @@ const Menu = ({ cat }: { cat: any }) => {
     const fetchPosts = async () => {
       try {
         const res = await AppAxios.get(`/posts/?cat=${cat}`);
-        // setSubCategory(res.data);
+        setSubCategory(res.data);
         console.log(res);
       } catch (err) {
         console.log(err);
@@ -38,7 +38,7 @@ const Menu = ({ cat }: { cat: any }) => {
       )}
       {subCategory.map((post: SubCategory) => (
         <div className="post" key={post.id}>
-          <img src={post.img} alt="" />
+          <img src={`../uploads/${post.img}`} alt="" />
           <h2>{post.title}</h2>
           <button>Read More</button>
         </div>
